@@ -1,12 +1,15 @@
-.hideit{
-    display: none;
+.hideit {
+  display: none;
 }
-.pe-auto{
-    cursor: pointer;
+.option-container {
+  margin-bottom: 5px;
 }
-.bggreen{
-    background-color: lightgreen;
+label {
+  cursor: pointer;
 }
-.bgred{
-    background-color: red;
+.bggreen {
+  background-color: lightgreen;
+}
+.bgred {
+  background-color: red;
 }
