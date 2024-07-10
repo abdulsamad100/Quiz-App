@@ -1,0 +1,12 @@
+.hideit{
+    display: none;
+}
+.pe-auto{
+    cursor: pointer;
+}
+.bggreen{
+    background-color: lightgreen;
+}
+.bgred{
+    background-color: red;
+}
