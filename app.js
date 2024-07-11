@@ -1,34 +1,64 @@
+export default currentUser = {};
+
 function signup() {
     var name = document.querySelector('#usname').value;
     var email = document.querySelector('#usemail').value;
     var pass = document.querySelector('#uspass').value;
+    
     if (name == "" || email == "" || pass == "") {
         alert("Kindly fill all fields");
         return;
     }
-    localStorage.setItem("name", name);
-    localStorage.setItem("email", email);
-    localStorage.setItem("pass", pass);
+
+    var userFromDB = JSON.parse(localStorage.getItem("users")) || [];
     
+    // Check if email already exists
+    for (let i = 0; i < userFromDB.length; i++) {
+        if (userFromDB[i].email === email) {
+            alert("Email already exists!");
+            return;
+        }
+    }
+
+    var newUser = {
+        name: name,
+        email: email,
+        pass: pass
+    };
+    
+    userFromDB.push(newUser);
+    localStorage.setItem("users", JSON.stringify(userFromDB));
+
     // Clear all fields after signup
     document.querySelector('#usname').value = '';
     document.querySelector('#usemail').value = '';
     document.querySelector('#uspass').value = '';
-
+    
     alert("Signup successful!");
 }
 
 function login() {
-    var email = localStorage.getItem("email");
-    var pass = localStorage.getItem("pass");
     var lemail = document.querySelector("#ulemail").value;
     var lpass = document.querySelector("#ulpass").value;
-    if (email == lemail && pass == lpass) {
-        window.location.href = 'questions.html';
-        console.log("Running")
-    } else {
-        alert("Email/Password is incorrect");
+
+    if (lemail == "" || lpass == "") {
+        alert("Kindly fill all fields");
+        return;
     }
+
+    var userFromDB = JSON.parse(localStorage.getItem("users")) || [];
+    
+    for (let i = 0; i < userFromDB.length; i++) {
+        if (userFromDB[i].email === lemail && userFromDB[i].pass === lpass) {
+            currentUser.name = userFromDB[i].name;
+            currentUser.email = userFromDB[i].email;
+            currentUser.pass = userFromDB[i].pass;
+            window.location.href = 'questions.html';
+            return;
+        }
+    }
+    
+    alert("Email/Password is incorrect");
 }
 
 function showLogin() {

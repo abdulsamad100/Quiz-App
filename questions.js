@@ -1,3 +1,5 @@
+import { currentUser } from "./app.js";
+console.log(currentUser);    
 var question = [{
     question: "Your name:",
     qop1: "Samad",
