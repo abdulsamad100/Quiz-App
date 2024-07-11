@@ -4,6 +4,9 @@
 .option-container {
   margin-bottom: 5px;
 }
+.pe-auto {
+  cursor: pointer;
+}
 label {
   cursor: pointer;
 }

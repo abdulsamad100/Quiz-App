@@ -1,12 +1,10 @@
-// import { currentUser } from "./app.js";
-// console.log(currentUser);    
 var question = [{
-    question: "Your name:",
+    question: "Your Name:",
     qop1: "Samad",
     qop2: "Ahmed",
     qop3: "Yousuf",
     qop4: "Ali",
-    ans: "1. Samad"
+    ans: "Samad"
 },
 {
     question: "Your Father Name:",
@@ -14,14 +12,13 @@ var question = [{
     qop2: "Ali",
     qop3: "Mehmood",
     qop4: "Hassan",
-    ans: "3. Mehmood"
+    ans: "Mehmood"
 }];
 
 var qlength = question.length;
 var correctans = 0;
 var qstoexecute = 0;
 
-// Fisher-Yates shuffle algorithm
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -29,8 +26,7 @@ function shuffle(array) {
     }
     return array;
 }
-
-// Store the shuffled questions in localStorage if not already stored
+// localStorage.removeItem('shuffledQuestions')
 if (!localStorage.getItem('shuffledQuestions')) {
     var shuffledQuestions = shuffle([...question]);
     localStorage.setItem('shuffledQuestions', JSON.stringify(shuffledQuestions));
@@ -55,10 +51,10 @@ function setQuestion() {
     var op4 = document.querySelector("#option4");
 
     var qnow = shuffledQuestions[qstoexecute];
-    op1.value = `1. ${qnow.qop1}`;
-    op2.value = `2. ${qnow.qop2}`;
-    op3.value = `3. ${qnow.qop3}`;
-    op4.value = `4. ${qnow.qop4}`;
+    op1.value = qnow.qop1;
+    op2.value = qnow.qop2;
+    op3.value = qnow.qop3;
+    op4.value = qnow.qop4;
 
     qnum.innerHTML = `Question ${qstoexecute + 1}:`; // Dynamic question number
     questiondetail.innerHTML = qnow.question;
@@ -82,6 +78,8 @@ function checkAnswer() {
 
     if (selectedOption) {
         var selectedValue = selectedOption.value;
+        console.log(selectedValue);
+        console.log(qnow.ans)
         if (selectedValue === qnow.ans) {
             selectedOption.nextElementSibling.classList.add("bggreen"); // Highlight correct answer (green)
             correctans++;
@@ -110,7 +108,8 @@ function nextQuestion() {
         var user = JSON.parse(localStorage.getItem("currentUser"))
         var uname = toTitleCase(user.name);
         var Percentage = (correctans * 100) / qlength;
-        marksdiv.innerHTML = `<h1>Mr. ${uname}</h1><p>Your score is ${correctans} out of ${qlength}</p><p>Total Percentage is ${Percentage}%</p>`;
+
+        marksdiv.innerHTML = `<h1>Mr. ${uname}</h1><p>Your score is ${correctans} out of ${qlength}</p><p>Total Percentage is ${Percentage}%<br> <a href="index.html">Logout</a></p>`;
 
         localStorage.removeItem('shuffledQuestions');
     }

@@ -1,16 +1,19 @@
-var currentUser={}
+var currentUser = {}
+var adminUser = { email: "admin", pass: "admin123" }
+localStorage.setItem("admin", JSON.stringify(adminUser));
+
 function signup() {
     var name = document.querySelector('#usname').value;
     var email = document.querySelector('#usemail').value;
     var pass = document.querySelector('#uspass').value;
-    
+
     if (name == "" || email == "" || pass == "") {
         alert("Kindly fill all fields");
         return;
     }
 
     var userFromDB = JSON.parse(localStorage.getItem("users")) || [];
-    
+
     // Check if email already exists
     for (let i = 0; i < userFromDB.length; i++) {
         if (userFromDB[i].email === email) {
@@ -24,7 +27,7 @@ function signup() {
         email: email,
         pass: pass
     };
-    
+
     userFromDB.push(newUser);
     localStorage.setItem("users", JSON.stringify(userFromDB));
 
@@ -32,7 +35,7 @@ function signup() {
     document.querySelector('#usname').value = '';
     document.querySelector('#usemail').value = '';
     document.querySelector('#uspass').value = '';
-    
+
     alert("Signup successful!");
 }
 
@@ -46,7 +49,7 @@ function login() {
     }
 
     var userFromDB = JSON.parse(localStorage.getItem("users")) || [];
-    
+
     for (let i = 0; i < userFromDB.length; i++) {
         if (userFromDB[i].email === lemail && userFromDB[i].pass === lpass) {
             currentUser.name = userFromDB[i].name;
@@ -57,7 +60,26 @@ function login() {
             return;
         }
     }
-    
+
+    alert("Email/Password is incorrect");
+}
+
+function adminLogin() {
+    var alemail = document.querySelector("#alemail").value;
+    var alpass = document.querySelector("#alpass").value;
+
+    if (alemail == "" || alpass == "") {
+        alert("Kindly fill all fields");
+        return;
+    }
+
+    var adminCredentials = JSON.parse(localStorage.getItem("admin")) || [];
+
+    if (adminCredentials.email === alemail && adminCredentials.pass === alpass) {
+        window.location.href = 'admin.html';
+        return;
+    }
+
     alert("Email/Password is incorrect");
 }
 
@@ -68,9 +90,18 @@ function showLogin() {
     login.classList.remove("hideit");
 }
 
+function showAdmin() {
+    var admin = document.getElementById("adlogin");
+    var signup = document.getElementById("signup");
+    signup.classList.add("hideit");
+    admin.classList.remove("hideit");
+}
+
 function showSignup() {
+    var admin = document.getElementById("adlogin");
     var signup = document.getElementById("signup");
     var login = document.getElementById("login");
+    admin.classList.add("hideit");
     signup.classList.remove("hideit");
     login.classList.add("hideit");
 }

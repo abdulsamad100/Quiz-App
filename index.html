@@ -19,6 +19,7 @@
         <label for="uspass">Password: </label><input type="text" id="uspass"><br>
         <button type="submit" class="btn btn-primary" onclick="signup()">Signup</button><br>
         <a onclick="showLogin()" class="pe-auto">Login</a><br><br>
+        <a onclick="showAdmin()" class="pe-auto">Admin Login</a><br><br>
     </div>
 
     <div id="login" class="hideit">
@@ -29,10 +30,19 @@
         <a onclick="showSignup()" class="pe-auto">Signup</a><br><br>
     </div>
 
+    <div id="adlogin" class="hideit">
+        <h1>Admin Login</h1>
+        <label for="alemail">Email: </label><input type="text" id="alemail" required="required"><br>
+        <label for="alpass">Password: </label><input type="text" id="alpass"><br>
+        <button type="submit" class="btn btn-primary" onclick="adminLogin()">Login</button><br>
+        <a onclick="showSignup()" class="pe-auto">Signup</a><br><br>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script src="app.js"></script>
+
 </body>
 
 </html>
