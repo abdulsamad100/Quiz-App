@@ -1,5 +1,4 @@
-export default currentUser = {};
-
+var currentUser={}
 function signup() {
     var name = document.querySelector('#usname').value;
     var email = document.querySelector('#usemail').value;
@@ -52,7 +51,8 @@ function login() {
         if (userFromDB[i].email === lemail && userFromDB[i].pass === lpass) {
             currentUser.name = userFromDB[i].name;
             currentUser.email = userFromDB[i].email;
-            currentUser.pass = userFromDB[i].pass;
+            // currentUser.pass = userFromDB[i].pass;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
             window.location.href = 'questions.html';
             return;
         }

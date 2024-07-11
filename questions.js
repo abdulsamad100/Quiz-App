@@ -1,5 +1,5 @@
-import { currentUser } from "./app.js";
-console.log(currentUser);    
+// import { currentUser } from "./app.js";
+// console.log(currentUser);    
 var question = [{
     question: "Your name:",
     qop1: "Samad",
@@ -95,7 +95,6 @@ function checkAnswer() {
 }
 
 function nextQuestion() {
-    // Clear previous answer selection and highlighting:
     var allRadioInputs = document.querySelectorAll('input[type="radio"]');
     for (var i = 0; i < allRadioInputs.length; i++) {
         allRadioInputs[i].checked = false;
@@ -105,15 +104,14 @@ function nextQuestion() {
     if (qstoexecute < qlength) {
         setQuestion();
     } else {
-        // Handle end-of-quiz scenario (optional: display score, etc.)
         document.querySelector("#qpanel").classList.add("hideit");
         var marksdiv = document.querySelector("#marks");
         marksdiv.classList.remove("hideit");
-        var uname = toTitleCase(localStorage.getItem("name"));
+        var user = JSON.parse(localStorage.getItem("currentUser"))
+        var uname = toTitleCase(user.name);
         var Percentage = (correctans * 100) / qlength;
         marksdiv.innerHTML = `<h1>Mr. ${uname}</h1><p>Your score is ${correctans} out of ${qlength}</p><p>Total Percentage is ${Percentage}%</p>`;
 
-        // Clear the shuffled questions from localStorage for future use
         localStorage.removeItem('shuffledQuestions');
     }
 }
