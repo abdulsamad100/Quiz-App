@@ -14,7 +14,6 @@ function signup() {
 
     var userFromDB = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Check if email already exists
     for (let i = 0; i < userFromDB.length; i++) {
         if (userFromDB[i].email === email) {
             alert("Email already exists!");
@@ -31,7 +30,6 @@ function signup() {
     userFromDB.push(newUser);
     localStorage.setItem("users", JSON.stringify(userFromDB));
 
-    // Clear all fields after signup
     document.querySelector('#usname').value = '';
     document.querySelector('#usemail').value = '';
     document.querySelector('#uspass').value = '';

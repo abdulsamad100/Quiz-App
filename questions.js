@@ -26,6 +26,7 @@ function shuffle(array) {
     }
     return array;
 }
+
 // localStorage.removeItem('shuffledQuestions')
 if (!localStorage.getItem('shuffledQuestions')) {
     var shuffledQuestions = shuffle([...question]);
