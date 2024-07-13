@@ -4,7 +4,7 @@ var qstoexecute = 0;
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+        [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
 }
@@ -68,11 +68,11 @@ if (questions.length === 0) {
         if (selectedOption) {
             var selectedValue = selectedOption.value;
             if (selectedValue === qnow.ans) {
-                selectedOption.nextElementSibling.classList.add("bggreen"); // Highlight correct answer (green)
+                selectedOption.nextElementSibling.classList.add("bggreen");
                 correctans++;
             } else {
-                selectedOption.nextElementSibling.classList.add("bgred"); // Highlight incorrect answer (red)
-                document.querySelector('input[value="' + qnow.ans + '"]').nextElementSibling.classList.add("bggreen"); // Highlight correct answer
+                selectedOption.nextElementSibling.classList.add("bgred"); 
+                document.querySelector('input[value="' + qnow.ans + '"]').nextElementSibling.classList.add("bggreen");
             }
         } else {
             alert("Please select an answer.");
