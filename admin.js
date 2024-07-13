@@ -39,7 +39,6 @@ function addQuestion() {
     } else {
         const QuizQuestions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
 
-        // Check if the question already exists
         const duplicate = QuizQuestions.find(q => q.question === qs);
 
         if (duplicate) {
@@ -47,8 +46,8 @@ function addQuestion() {
         }
         else {
             const qstoUpload = { question: qs, qop1: op1, qop2: op2, qop3: op3, qop4: op4, ans: ans };
-            QuizQuestions.push(qstoUpload); // Add new question
-            localStorage.setItem('Quiz-Questions', JSON.stringify(QuizQuestions)); // Save updated array
+            QuizQuestions.push(qstoUpload);
+            localStorage.setItem('Quiz-Questions', JSON.stringify(QuizQuestions));
             alert("Question added");
 
             document.querySelector("#qstoadd").value = "";
@@ -111,8 +110,8 @@ function dltqs(num) {
     const QuizQuestions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
 
     if (num >= 0 && num < QuizQuestions.length) {
-        QuizQuestions.splice(num, 1); // Remove the question at the specified index
-        localStorage.setItem('Quiz-Questions', JSON.stringify(QuizQuestions)); // Save the updated array back to localStorage
+        QuizQuestions.splice(num, 1);
+        localStorage.setItem('Quiz-Questions', JSON.stringify(QuizQuestions));
         alert("Question deleted");
         showDelete();
     } else {
