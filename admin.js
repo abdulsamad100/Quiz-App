@@ -1,4 +1,4 @@
-let optionCount = 2; // Start with 2 options
+let optionCount = 2;
 
 function getSelectedRadioValue() {
     const radios = document.getElementsByName('ans');
@@ -47,6 +47,7 @@ function addQuestion() {
             alert("Question already exists");
         } else {
             const qstoUpload = {
+                id: QuizQuestions.length + 1,
                 question: qs,
                 options: options.map((op, i) => ({ value: op, label: op })),
                 ans: ans
@@ -91,16 +92,18 @@ function showAdd() {
 }
 
 function addOption() {
-    optionCount++;
-    const optionsContainer = document.querySelector("#optionsContainer");
-    const newOption = `
+    if (optionCount < 4) {
+        optionCount++;
+        const optionsContainer = document.querySelector("#optionsContainer");
+        const newOption = `
         <div id="option${optionCount}">
             <label for="op${optionCount}">Option ${optionCount}: </label>&nbsp;
             <input type="text" id="op${optionCount}">&nbsp;
             <input type="radio" name="ans" id="ans${optionCount}"><br>
         </div>
     `;
-    optionsContainer.innerHTML += newOption;
+        optionsContainer.innerHTML += newOption;
+    }
 }
 
 function removeOption() {
@@ -109,12 +112,6 @@ function removeOption() {
         optionToRemove.remove();
         optionCount--;
     }
-}
-
-function showDefault() {
-    document.querySelector("#default").classList.remove("hideit");
-    document.querySelector("#addPanel").classList.add("hideit");
-    document.querySelector("#dltPanel").classList.add("hideit");
 }
 
 function showDelete() {
@@ -144,6 +141,110 @@ function showDelete() {
     document.querySelector("#default").classList.add("hideit");
 }
 
+function showEdit() {
+    let questions = JSON.parse(localStorage.getItem("Quiz-Questions"));
+    const editPanel = document.querySelector("#editPanel");
+    editPanel.innerHTML = "<h1>Edit Question</h1>";
+
+    if (questions && questions.length > 0) {
+        questions.forEach((question, index) => {
+            const questionNumber = index + 1;
+            const mainDiv = `
+                <div id="qpanel-${questionNumber}">
+                    <span id="qnum">Question #${questionNumber}</span>
+                    <span id="question">${question.question}</span><br>
+                    ${question.options.map((option, i) => `<label for="option${i + 1}" id="qop${i + 1}">Option ${i + 1}: ${option.label}</label><br>`).join('')}
+                    <button type="button" class="btn btn-primary" id="edit-${questionNumber}" onclick="editQuestion(${index})">Edit</button><br>
+                </div>
+            `;
+            editPanel.innerHTML += mainDiv;
+        });
+    } else {
+        editPanel.innerHTML = `<span>No questions to Edit</span><br>`;
+    }
+
+    editPanel.innerHTML += `<a onclick="showDefault()" class="pe-auto">Go Back</a>`;
+    document.querySelector("#dltPanel").classList.add("hideit");
+    document.querySelector("#default").classList.add("hideit");
+    editPanel.classList.remove("hideit");
+}
+
+function editQuestion(index) {
+    let questions = JSON.parse(localStorage.getItem("Quiz-Questions"));
+    const question = questions[index];
+
+    const editFormPanel = document.querySelector("#editFormPanel");
+    editFormPanel.innerHTML = `
+        <h2>Edit Question</h2>
+        <form id="editForm">
+            <div class="mb-3">
+                <label for="editFormQuestion" class="form-label">Question</label>
+                <input type="text" class="form-control" width="200px" id="editFormQuestion" value="${question.question}">
+            </div>
+            ${question.options.map((option, i) => `
+                <div class="mb-3">
+                    <label for="editFormOption${i + 1}" class="form-label">Option ${i + 1}</label>
+                    <input type="text" class="form-control" width="200px" id="editFormOption${i + 1}" value="${option.label}">
+                    <input type="radio" name="editAns" id="editAns${i + 1}" ${option.value === question.ans ? 'checked' : ''}> Correct Answer
+                </div>
+            `).join('')}
+            <button type="button" class="btn btn-primary" id="editFormSaveButton" onclick="saveEditedQuestion(${index})">Save</button>
+            <button type="button" class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+        </form>
+    `;
+
+    document.querySelector("#editPanel").classList.add("hideit");
+    editFormPanel.classList.remove("hideit");
+}
+
+function saveEditedQuestion(index) {
+    let questions = JSON.parse(localStorage.getItem("Quiz-Questions"));
+
+    const editedQuestion = document.querySelector("#editFormQuestion").value;
+
+    const editedOptions = questions[index].options.map((option, i) => {
+        const label = document.querySelector(`#editFormOption${i + 1}`).value;
+        const value = label;
+        return { ...option, label, value };
+    });
+
+    const selectedAnsId = Array.from(document.getElementsByName('editAns')).find(radio => radio.checked)?.id;
+    let editedAns = null;
+
+    if (selectedAnsId) {
+        const selectedIndex = parseInt(selectedAnsId.replace('editAns', '')) - 1;
+        editedAns = editedOptions[selectedIndex]?.value;
+    }
+
+    if (!editedQuestion || editedOptions.some(op => !op.label)) {
+        alert("Kindly Fill all Fields");
+    } else if (!editedAns) {
+        alert("Kindly Select the correct answer");
+    } else {
+        questions[index].question = editedQuestion;
+        questions[index].options = editedOptions;
+        questions[index].ans = editedAns;
+
+        localStorage.setItem("Quiz-Questions", JSON.stringify(questions));
+
+        document.querySelector("#editFormPanel").classList.add("hideit");
+        showEdit();
+    }
+}
+
+function cancelEdit() {
+    document.querySelector("#editFormPanel").classList.add("hideit");
+    document.querySelector("#editPanel").classList.remove("hideit");
+}
+
+function showDefault() {
+    document.querySelector("#editPanel").classList.add("hideit");
+    document.querySelector("#dltPanel").classList.add("hideit");
+    document.querySelector("#addPanel").classList.add("hideit");
+    document.querySelector("#editKey").classList.add("hideit");
+    document.querySelector("#default").classList.remove("hideit");
+}
+
 function dltqs(num) {
     const QuizQuestions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
 
@@ -162,4 +263,32 @@ function adminLogout() {
     ad.value = "false";
     localStorage.setItem("admin", JSON.stringify(ad));
     window.location.href = 'index.html';
+}
+
+function showKey() {
+    document.querySelector("#editKey").classList.remove("hideit");
+    document.querySelector("#default").classList.add("hideit");
+    const previouskey = JSON.parse(localStorage.getItem("quiz-keys"));
+    let keyPanel = document.querySelector("#editKey");
+    keyPanel.innerHTML = `<h2>Current Key: <span id="JSKey"></span></h2>
+    <input type="text" class="form-control" width="200px" id="newKey">
+    <button type="button" class="btn btn-primary" onclick="changeKey()">Change Key</button>
+    <button type="button" class="btn btn-danger" onclick="showDefault()">Go Back</button>
+    `
+    document.querySelector("#JSKey").innerHTML = previouskey.js;
+}
+
+function changeKey() {
+    const newKey = document.querySelector("#newKey");
+    const previouskey = JSON.parse(localStorage.getItem("quiz-keys"));
+    if (newKey.value === "") {
+        alert("Kindly Enter Value");
+    }
+    else if (newKey.value == previouskey.js) {
+        alert("Enter a New key to Update");
+    } else {
+        previouskey.js = newKey.value;
+        localStorage.setItem("quiz-keys", JSON.stringify(previouskey));
+        showDefault();
+    }
 }

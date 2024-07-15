@@ -1,7 +1,13 @@
-
 var currentUser = {}
-var adminUser = { email: "admin", pass: "admin123", value:"false" }
+var adminUser = { email: "admin", pass: "admin123", value: "false" }
 localStorage.setItem("admin", JSON.stringify(adminUser));
+localStorage.removeItem("quizStarted");
+let quizkey = localStorage.getItem("quiz-keys")
+if (quizkey==null) {
+    var initialKeys = { js: "js2024" }
+    localStorage.setItem("quiz-keys", JSON.stringify(initialKeys));
+}
+
 
 function signup() {
     var name = document.querySelector('#usname').value;
@@ -55,7 +61,7 @@ function login() {
             currentUser.email = userFromDB[i].email;
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             localStorage.setItem('isLoggedIn', true);
-            window.location.href = 'questions.html';
+            window.location.href = 'allquiz.html';
             return;
         }
     }
@@ -75,9 +81,9 @@ function adminLogin() {
     var adminCredentials = JSON.parse(localStorage.getItem("admin")) || [];
 
     if (adminCredentials.email === alemail && adminCredentials.pass === alpass) {
-        let ad=JSON.parse(localStorage.getItem("admin"));
-        ad.value="true";
-        localStorage.setItem("admin",JSON.stringify(ad));
+        let ad = JSON.parse(localStorage.getItem("admin"));
+        ad.value = "true";
+        localStorage.setItem("admin", JSON.stringify(ad));
         window.location.href = 'admin.html';
         return;
     }
@@ -108,21 +114,20 @@ function showSignup() {
     login.classList.add("hideit");
 }
 
-document.querySelector('#uspass').addEventListener('keypress', function(event) {
+document.querySelector('#uspass').addEventListener('keypress', function (event) {
     if (event.keyCode === 13) {
-      signup();
+        signup();
     }
-  });
-  
-  document.querySelector('#ulpass').addEventListener('keypress', function(event) {
+});
+
+document.querySelector('#ulpass').addEventListener('keypress', function (event) {
     if (event.keyCode === 13) {
-      login();
+        login();
     }
-  });
-  
-  document.querySelector('#alpass').addEventListener('keypress', function(event) {
+});
+
+document.querySelector('#alpass').addEventListener('keypress', function (event) {
     if (event.keyCode === 13) {
-      adminLogin();
+        adminLogin();
     }
-  });
-  
+});

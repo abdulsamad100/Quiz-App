@@ -12,7 +12,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             var isLoggedIn = localStorage.getItem('isLoggedIn');
             if (isLoggedIn) {
-                window.location.href = 'questions.html';
+                window.location.href = 'allquiz.html';
             }
         });
     </script>    
@@ -24,7 +24,7 @@
         <h1>Signup</h1>
         <label for="usname">Name: </label><input type="text" id="usname" required="required"><br>
         <label for="usemail">Email: </label><input type="text" id="usemail"><br>
-        <label for="uspass">Password: </label><input type="text" id="uspass"><br>
+        <label for="uspass">Password: </label><input type="password" id="uspass"><br>
         <button type="submit" class="btn btn-primary" onclick="signup()">Signup</button><br>
         <a onclick="showLogin()" class="pe-auto">Login</a><br><br>
         <a onclick="showAdmin()" class="pe-auto">Admin Login</a><br><br>
@@ -33,7 +33,7 @@
     <div id="login" class="hideit">
         <h1>Login</h1>
         <label for="ulemail">Email: </label><input type="text" id="ulemail" required="required"><br>
-        <label for="ulpass">Password: </label><input type="text" id="ulpass"><br>
+        <label for="ulpass">Password: </label><input type="password" id="ulpass"><br>
         <button type="submit" class="btn btn-primary" onclick="login()">Login</button><br>
         <a onclick="showSignup()" class="pe-auto">Signup</a><br><br>
     </div>
@@ -41,7 +41,7 @@
     <div id="adlogin" class="hideit">
         <h1>Admin Login</h1>
         <label for="alemail">Email: </label><input type="text" id="alemail" required="required"><br>
-        <label for="alpass">Password: </label><input type="text" id="alpass"><br>
+        <label for="alpass">Password: </label><input type="password" id="alpass"><br>
         <button type="submit" class="btn btn-primary" onclick="adminLogin()">Login</button><br>
         <a onclick="showSignup()" class="pe-auto">Signup</a><br><br>
     </div>

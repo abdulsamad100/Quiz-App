@@ -1,20 +1,21 @@
-window.onbeforeunload = function(event) {
+window.onbeforeunload = function (event) {
     var confirmationMessage = 'Are you sure you want to leave this page?';
     event.returnValue = confirmationMessage;
-    localStorage.removeItem('isLoggedIn');
-    window.location.href = 'index.html';
+    localStorage.removeItem("quizStarted");
+    // localStorage.removeItem('isLoggedIn');
+    // Commented out the line below to avoid an unnecessary redirection
+    // window.location.href = 'allquiz.html';
     return confirmationMessage;
-  };
-  
-function userLogout() {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('qstoexecute');
-    window.location.href = 'index.html';
 };
+
 document.addEventListener('DOMContentLoaded', function () {
     if (!localStorage.getItem('isLoggedIn')) {
         window.location.href = 'index.html';
+        return;
+    }
+    if (!localStorage.getItem('quizStarted')) {
+        window.location.href = 'allquiz.html';
+        return;
     }
 });
 
@@ -33,7 +34,7 @@ var questions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
 
 if (questions.length === 0) {
     alert("Ask admin to add questions");
-    window.location.href = "index.html";
+    userGoBack();
 } else {
     if (!localStorage.getItem('shuffledQuestions')) {
         var shuffledQuestions = shuffle([...questions]);
@@ -131,26 +132,27 @@ if (questions.length === 0) {
     function checkAnswer() {
         var qnow = shuffledQuestions[qstoexecute];
         var selectedButton = document.querySelector('.btn-option.selected');
-        document.querySelector("#checkbtn").classList.add("hideit");
-        document.querySelector("#nextbtn").classList.remove("hideit");
 
         if (selectedButton) {
-            var selectedValue = selectedButton.innerText.slice(3); // Remove the number and space
+            var selectedValue = selectedButton.innerText.slice(3);
             if (selectedValue === qnow.ans) {
                 selectedButton.classList.add("bggreen");
                 correctans++;
+                document.querySelector("#checkbtn").classList.add("hideit");
+                document.querySelector("#nextbtn").classList.remove("hideit");
             } else {
                 selectedButton.classList.add("bgred");
                 var correctButton = Array.from(document.querySelectorAll('.btn-option')).find(button => button.innerText.slice(3) === qnow.ans);
                 if (correctButton) {
                     correctButton.classList.add("bggreen");
                 }
+                document.querySelector("#checkbtn").classList.add("hideit");
+                document.querySelector("#nextbtn").classList.remove("hideit");
             }
         } else {
             alert("Please select an answer.");
         }
 
-        // Remove blue border color from all buttons
         var allButtons = document.querySelectorAll(".btn-option");
         allButtons.forEach(button => {
             button.style.borderColor = "black";
@@ -167,14 +169,38 @@ if (questions.length === 0) {
             marksdiv.classList.remove("hideit");
             var user = JSON.parse(localStorage.getItem("currentUser"));
             var uname = toTitleCase(user.name);
-            var Percentage = (correctans * 100) / qlength;
+            var percentage = (correctans * 100) / qlength;
 
-            marksdiv.innerHTML = `<h1>Mr. ${uname}</h1><p>Your score is ${correctans} out of ${qlength}</p><p>Total Percentage is ${Percentage}%<br> <button onclick="userLogout()" type="button" class="btn btn-danger">Logout</button></p>`;
+            marksdiv.innerHTML = `
+                <h1>Mr. ${uname}</h1>
+                <p>Your score is ${correctans} out of ${qlength}</p>
+                <p>Total Percentage is ${percentage.toFixed(2)}%<br> 
+                <button onclick="userGoback()" type="button" class="btn btn-danger">Back to Home</button></p>
+            `;
 
             localStorage.removeItem('shuffledQuestions');
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('currentUser');
+
+            // Update the user's score in localStorage
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            let updatedUsers = users.map(u => {
+                if (u.name === user.name) {
+                    return { ...u, jscore: percentage.toFixed(2) };
+                }
+                return u;
+            });
+            localStorage.setItem('users', JSON.stringify(updatedUsers));
+            // Optionally, you might want to update the currentUser as well
+            localStorage.setItem('currentUser', JSON.stringify({ ...user, jscore: percentage.toFixed(2) }));
+
+            // localStorage.removeItem('isLoggedIn');
+            // localStorage.removeItem('currentUser');
         }
+    }
+
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
     }
 
     document.addEventListener('click', function (e) {
@@ -186,15 +212,12 @@ if (questions.length === 0) {
 
     createQuestionPanel();
     setQuestion();
-}
-
-function toTitleCase(str) {
-    return str.replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-} function userLogout() {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('qstoexecute'); // Clear the stored index
-    window.location.href = 'index.html';
 };
+
+function userGoback() {
+    // localStorage.removeItem('isLoggedIn');
+    // localStorage.removeItem('currentUser');
+    localStorage.removeItem('quizStarted');
+    localStorage.removeItem('qstoexecute');
+    window.location.href = 'allquiz.html';
+}
