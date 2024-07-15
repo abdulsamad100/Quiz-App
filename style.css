@@ -19,3 +19,11 @@ label {
 #qstoadd{
   width: 300px;
 }
+.btn-option {
+  border: 2px solid black;
+  transition: border-color 0.3s ease;
+}
+
+.btn-option.selected {
+  border-color: blue;
+}

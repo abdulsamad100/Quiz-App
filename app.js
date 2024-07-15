@@ -1,5 +1,6 @@
+
 var currentUser = {}
-var adminUser = { email: "admin", pass: "admin123" }
+var adminUser = { email: "admin", pass: "admin123", value:"false" }
 localStorage.setItem("admin", JSON.stringify(adminUser));
 
 function signup() {
@@ -52,8 +53,8 @@ function login() {
         if (userFromDB[i].email === lemail && userFromDB[i].pass === lpass) {
             currentUser.name = userFromDB[i].name;
             currentUser.email = userFromDB[i].email;
-            // currentUser.pass = userFromDB[i].pass;
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('isLoggedIn', true);
             window.location.href = 'questions.html';
             return;
         }
@@ -74,6 +75,9 @@ function adminLogin() {
     var adminCredentials = JSON.parse(localStorage.getItem("admin")) || [];
 
     if (adminCredentials.email === alemail && adminCredentials.pass === alpass) {
+        let ad=JSON.parse(localStorage.getItem("admin"));
+        ad.value="true";
+        localStorage.setItem("admin",JSON.stringify(ad));
         window.location.href = 'admin.html';
         return;
     }
@@ -103,3 +107,22 @@ function showSignup() {
     signup.classList.remove("hideit");
     login.classList.add("hideit");
 }
+
+document.querySelector('#uspass').addEventListener('keypress', function(event) {
+    if (event.keyCode === 13) {
+      signup();
+    }
+  });
+  
+  document.querySelector('#ulpass').addEventListener('keypress', function(event) {
+    if (event.keyCode === 13) {
+      login();
+    }
+  });
+  
+  document.querySelector('#alpass').addEventListener('keypress', function(event) {
+    if (event.keyCode === 13) {
+      adminLogin();
+    }
+  });
+  

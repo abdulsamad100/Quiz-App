@@ -1,3 +1,23 @@
+window.onbeforeunload = function(event) {
+    var confirmationMessage = 'Are you sure you want to leave this page?';
+    event.returnValue = confirmationMessage;
+    localStorage.removeItem('isLoggedIn');
+    window.location.href = 'index.html';
+    return confirmationMessage;
+  };
+  
+function userLogout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('qstoexecute');
+    window.location.href = 'index.html';
+};
+document.addEventListener('DOMContentLoaded', function () {
+    if (!localStorage.getItem('isLoggedIn')) {
+        window.location.href = 'index.html';
+    }
+});
+
 var correctans = 0;
 var qstoexecute = 0;
 
@@ -24,34 +44,70 @@ if (questions.length === 0) {
 
     var qlength = shuffledQuestions.length;
 
+    function createQuestionPanel() {
+        var qpanel = document.querySelector("#qpanel");
+
+        var qnum = document.createElement("span");
+        qnum.id = "qnum";
+        qpanel.appendChild(qnum);
+
+        var questiondetail = document.createElement("span");
+        questiondetail.id = "question";
+        qpanel.appendChild(questiondetail);
+        qpanel.appendChild(document.createElement("br"));
+
+        var optionsContainer = document.createElement("div");
+        optionsContainer.id = "options-container";
+        qpanel.appendChild(optionsContainer);
+        qpanel.appendChild(document.createElement("br"));
+
+        var checkButton = document.createElement("button");
+        checkButton.type = "button";
+        checkButton.classList.add("btn", "btn-primary", "hideit");
+        checkButton.onclick = checkAnswer;
+        checkButton.id = "checkbtn";
+        checkButton.innerText = "Check";
+        qpanel.appendChild(checkButton);
+
+        var nextButton = document.createElement("button");
+        nextButton.type = "button";
+        nextButton.classList.add("btn", "btn-primary");
+        nextButton.onclick = nextQuestion;
+        nextButton.id = "nextbtn";
+        nextButton.innerText = "Next";
+        qpanel.appendChild(nextButton);
+    }
+
     function setQuestion() {
         document.querySelector("#checkbtn").classList.remove("hideit");
         document.querySelector("#nextbtn").classList.add("hideit");
 
         var qnum = document.querySelector("#qnum");
         var questiondetail = document.querySelector("#question");
-        var option1 = document.querySelector("#qop1");
-        var option2 = document.querySelector("#qop2");
-        var option3 = document.querySelector("#qop3");
-        var option4 = document.querySelector("#qop4");
+        var optionsContainer = document.querySelector("#options-container");
 
-        var op1 = document.querySelector("#option1");
-        var op2 = document.querySelector("#option2");
-        var op3 = document.querySelector("#option3");
-        var op4 = document.querySelector("#option4");
+        optionsContainer.innerHTML = '';
 
         var qnow = shuffledQuestions[qstoexecute];
-        op1.value = qnow.qop1;
-        op2.value = qnow.qop2;
-        op3.value = qnow.qop3;
-        op4.value = qnow.qop4;
 
         qnum.innerHTML = `Question ${qstoexecute + 1}:`;
         questiondetail.innerHTML = qnow.question;
-        option1.innerHTML = `1. ${qnow.qop1}`;
-        option2.innerHTML = `2. ${qnow.qop2}`;
-        option3.innerHTML = `3. ${qnow.qop3}`;
-        option4.innerHTML = `4. ${qnow.qop4}`;
+
+        qnow.options.forEach((option, index) => {
+            var optionContainer = document.createElement('div');
+            optionContainer.classList.add("option-container");
+            optionContainer.style.marginBottom = "10px";
+
+            var optionButton = document.createElement("button");
+            optionButton.type = "button";
+            optionButton.classList.add("btn", "btn-option");
+            optionButton.id = "option" + index;
+            optionButton.innerHTML = `<span class="option-number">${index + 1}. </span>${option.label}`;
+            optionButton.onclick = selectOption;
+            optionContainer.appendChild(optionButton);
+
+            optionsContainer.appendChild(optionContainer);
+        });
 
         var allOptions = document.querySelectorAll("label");
         for (var i = 0; i < allOptions.length; i++) {
@@ -59,32 +115,49 @@ if (questions.length === 0) {
         }
     }
 
+    function selectOption(event) {
+        var selectedButton = event.target.closest('.btn-option');
+        var allButtons = document.querySelectorAll(".btn-option");
+
+        allButtons.forEach(button => {
+            button.classList.remove("selected");
+            button.style.borderColor = "black";
+        });
+
+        selectedButton.classList.add("selected");
+        selectedButton.style.borderColor = "blue";
+    }
+
     function checkAnswer() {
         var qnow = shuffledQuestions[qstoexecute];
-        var selectedOption = document.querySelector('input[name="option"]:checked');
+        var selectedButton = document.querySelector('.btn-option.selected');
         document.querySelector("#checkbtn").classList.add("hideit");
         document.querySelector("#nextbtn").classList.remove("hideit");
 
-        if (selectedOption) {
-            var selectedValue = selectedOption.value;
+        if (selectedButton) {
+            var selectedValue = selectedButton.innerText.slice(3); // Remove the number and space
             if (selectedValue === qnow.ans) {
-                selectedOption.nextElementSibling.classList.add("bggreen");
+                selectedButton.classList.add("bggreen");
                 correctans++;
             } else {
-                selectedOption.nextElementSibling.classList.add("bgred"); 
-                document.querySelector('input[value="' + qnow.ans + '"]').nextElementSibling.classList.add("bggreen");
+                selectedButton.classList.add("bgred");
+                var correctButton = Array.from(document.querySelectorAll('.btn-option')).find(button => button.innerText.slice(3) === qnow.ans);
+                if (correctButton) {
+                    correctButton.classList.add("bggreen");
+                }
             }
         } else {
             alert("Please select an answer.");
         }
+
+        // Remove blue border color from all buttons
+        var allButtons = document.querySelectorAll(".btn-option");
+        allButtons.forEach(button => {
+            button.style.borderColor = "black";
+        });
     }
 
     function nextQuestion() {
-        var allRadioInputs = document.querySelectorAll('input[type="radio"]');
-        for (var i = 0; i < allRadioInputs.length; i++) {
-            allRadioInputs[i].checked = false;
-        }
-
         qstoexecute++;
         if (qstoexecute < qlength) {
             setQuestion();
@@ -96,18 +169,32 @@ if (questions.length === 0) {
             var uname = toTitleCase(user.name);
             var Percentage = (correctans * 100) / qlength;
 
-            marksdiv.innerHTML = `<h1>Mr. ${uname}</h1><p>Your score is ${correctans} out of ${qlength}</p><p>Total Percentage is ${Percentage}%<br> <a href="index.html">Logout</a></p>`;
+            marksdiv.innerHTML = `<h1>Mr. ${uname}</h1><p>Your score is ${correctans} out of ${qlength}</p><p>Total Percentage is ${Percentage}%<br> <button onclick="userLogout()" type="button" class="btn btn-danger">Logout</button></p>`;
 
             localStorage.removeItem('shuffledQuestions');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
         }
     }
 
-    function toTitleCase(str) {
-        return str.replace(
-            /\w\S*/g,
-            text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
-        );
-    }
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.id == 'logoutLink') {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+        }
+    });
 
+    createQuestionPanel();
     setQuestion();
 }
+
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+} function userLogout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('qstoexecute'); // Clear the stored index
+    window.location.href = 'index.html';
+};

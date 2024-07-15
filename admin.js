@@ -1,3 +1,5 @@
+let optionCount = 2; // Start with 2 options
+
 function getSelectedRadioValue() {
     const radios = document.getElementsByName('ans');
     for (let i = 0; i < radios.length; i++) {
@@ -10,29 +12,29 @@ function getSelectedRadioValue() {
 
 function addQuestion() {
     const qs = document.querySelector("#qstoadd").value;
-    const op1 = document.querySelector("#op1").value;
-    const op2 = document.querySelector("#op2").value;
-    const op3 = document.querySelector("#op3").value;
-    const op4 = document.querySelector("#op4").value;
+    const options = [];
+    for (let i = 1; i <= optionCount; i++) {
+        options.push(document.querySelector(`#op${i}`).value);
+    }
     const ansradio = getSelectedRadioValue();
     let ans = null;
 
     switch (ansradio) {
         case "ans1":
-            ans = op1;
+            ans = options[0];
             break;
         case "ans2":
-            ans = op2;
+            ans = options[1];
             break;
         case "ans3":
-            ans = op3;
+            ans = options[2];
             break;
         case "ans4":
-            ans = op4;
+            ans = options[3];
             break;
     }
 
-    if (!qs || !op1 || !op2 || !op3 || !op4) {
+    if (!qs || options.some(op => !op)) {
         alert("Kindly Fill all Fields");
     } else if (!ans) {
         alert("Kindly Select the correct answer");
@@ -43,30 +45,70 @@ function addQuestion() {
 
         if (duplicate) {
             alert("Question already exists");
-        }
-        else {
-            const qstoUpload = { question: qs, qop1: op1, qop2: op2, qop3: op3, qop4: op4, ans: ans };
+        } else {
+            const qstoUpload = {
+                question: qs,
+                options: options.map((op, i) => ({ value: op, label: op })),
+                ans: ans
+            };
             QuizQuestions.push(qstoUpload);
             localStorage.setItem('Quiz-Questions', JSON.stringify(QuizQuestions));
             alert("Question added");
 
             document.querySelector("#qstoadd").value = "";
-            document.querySelector("#op1").value = "";
-            document.querySelector("#op2").value = "";
-            document.querySelector("#op3").value = "";
-            document.querySelector("#op4").value = "";
-            const radios = document.getElementsByName('ans');
-            for (let i = 0; i < radios.length; i++) {
-                radios[i].checked = false;
+            for (let i = 1; i <= optionCount; i++) {
+                document.querySelector(`#op${i}`).value = "";
+                document.querySelector(`#ans${i}`).checked = false;
             }
         }
-
     }
 }
 
 function showAdd() {
+    const addPanel = document.querySelector("#addPanel");
+    addPanel.innerHTML = `
+        <h1>Adding Question....</h1>
+        <label for="qs">Question: </label><br>
+        <textarea id="qstoadd" placeholder="Enter Question here..."></textarea><br>
+        <br>
+        <div id="optionsContainer">
+            ${[1, 2].map(i => `
+                <div id="option${i}">
+                    <label for="op${i}">Option ${i}: </label>&nbsp;
+                    <input type="text" id="op${i}">&nbsp;
+                    <input type="radio" name="ans" id="ans${i}"><br>
+                </div>
+            `).join('')}
+        </div>
+        <br>
+        <button type="button" class="btn btn-primary" onclick="addOption()">Add Option</button>
+        <button type="button" class="btn btn-danger" onclick="removeOption()">Remove Option</button><br><br>
+        <button type="button" class="btn btn-success" onclick="addQuestion()">Add</button><br>
+        <a onclick="showDefault()" class="pe-auto">Go Back</a>
+    `;
     document.querySelector("#default").classList.add("hideit");
-    document.querySelector("#addPanel").classList.remove("hideit");
+    addPanel.classList.remove("hideit");
+}
+
+function addOption() {
+    optionCount++;
+    const optionsContainer = document.querySelector("#optionsContainer");
+    const newOption = `
+        <div id="option${optionCount}">
+            <label for="op${optionCount}">Option ${optionCount}: </label>&nbsp;
+            <input type="text" id="op${optionCount}">&nbsp;
+            <input type="radio" name="ans" id="ans${optionCount}"><br>
+        </div>
+    `;
+    optionsContainer.innerHTML += newOption;
+}
+
+function removeOption() {
+    if (optionCount > 2) {
+        const optionToRemove = document.querySelector(`#option${optionCount}`);
+        optionToRemove.remove();
+        optionCount--;
+    }
 }
 
 function showDefault() {
@@ -85,23 +127,19 @@ function showDelete() {
         QuizQuestions.forEach((question, index) => {
             const questionNumber = index + 1;
             const mainDiv = `
-        <div id="qpanel">
-            <span id="qnum">Question # ${questionNumber}</span>
-            <span id="question">${question.question}</span><br>
-            <label for="option1" id="qop1">Option 1: ${question.qop1}</label><br>
-            <label for="option2" id="qop2">Option 2: ${question.qop2}</label><br>
-            <label for="option3" id="qop3">Option 3: ${question.qop3}</label><br>
-            <label for="option4" id="qop4">Option 4: ${question.qop4}</label><br>
-            <button type="button" class="btn btn-danger" id="${questionNumber}" onclick="dltqs(${questionNumber - 1})">Delete</button><br>
-        </div>
-        `;
+                <div id="qpanel">
+                    <span id="qnum">Question # ${questionNumber}</span>
+                    <span id="question">${question.question}</span><br>
+                    ${question.options.map((option, i) => `<label for="option${i + 1}" id="qop${i + 1}">Option ${i + 1}: ${option.label}</label><br>`).join('')}
+                    <button type="button" class="btn btn-danger" id="${questionNumber}" onclick="dltqs(${questionNumber - 1})">Delete</button><br>
+                </div>
+            `;
             divContent.innerHTML += mainDiv;
-            // console.log("running");
         });
     } else {
         divContent.innerHTML = `<span>No questions to delete</span><br>`;
     }
-    divContent.innerHTML+=`<a onclick="showDefault()" class="pe-auto">Go Back</a>`
+    divContent.innerHTML += `<a onclick="showDefault()" class="pe-auto">Go Back</a>`
     document.querySelector("#dltPanel").classList.remove("hideit");
     document.querySelector("#default").classList.add("hideit");
 }
@@ -119,6 +157,9 @@ function dltqs(num) {
     }
 }
 
-function adminLogout(){
+function adminLogout() {
+    let ad = JSON.parse(localStorage.getItem("admin"));
+    ad.value = "false";
+    localStorage.setItem("admin", JSON.stringify(ad));
     window.location.href = 'index.html';
 }
