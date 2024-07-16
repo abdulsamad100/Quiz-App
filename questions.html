@@ -18,8 +18,8 @@
             var questions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
             if (questions.length === 0) {
                 alert("Ask admin to add questions");
-                localStorage.removeItem('isLoggedIn');
-                window.location.href = "index.html";
+                // localStorage.removeItem('isLoggedIn');
+                window.location.href = "allquiz.html";
                 return;
             }
         }
