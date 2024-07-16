@@ -9,14 +9,14 @@ window.onbeforeunload = function (event) {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    if (!localStorage.getItem('isLoggedIn')) {
-        window.location.href = 'index.html';
-        return;
-    }
-    if (!localStorage.getItem('quizStarted')) {
-        window.location.href = 'allquiz.html';
-        return;
-    }
+    // if (!localStorage.getItem('isLoggedIn')) {
+    //     window.location.href = 'index.html';
+    //     return;
+    // }
+    // if (!localStorage.getItem('quizStarted')) {
+    //     window.location.href = 'allquiz.html';
+    //     return;
+    // }
 });
 
 var correctans = 0;
@@ -46,23 +46,24 @@ if (questions.length === 0) {
     var qlength = shuffledQuestions.length;
 
     function createQuestionPanel() {
-        var qpanel = document.querySelector("#qpanel");
+        let qpanel = document.querySelector("#qpanel");
 
-        var qnum = document.createElement("span");
+        let qnum = document.createElement("span");
         qnum.id = "qnum";
         qpanel.appendChild(qnum);
 
-        var questiondetail = document.createElement("span");
+        let questiondetail = document.createElement("span");
         questiondetail.id = "question";
         qpanel.appendChild(questiondetail);
         qpanel.appendChild(document.createElement("br"));
+        qpanel.appendChild(document.createElement("br"));
 
-        var optionsContainer = document.createElement("div");
+        let optionsContainer = document.createElement("div");
         optionsContainer.id = "options-container";
         qpanel.appendChild(optionsContainer);
         qpanel.appendChild(document.createElement("br"));
 
-        var checkButton = document.createElement("button");
+        let checkButton = document.createElement("button");
         checkButton.type = "button";
         checkButton.classList.add("btn", "btn-primary", "hideit");
         checkButton.onclick = checkAnswer;
@@ -70,7 +71,7 @@ if (questions.length === 0) {
         checkButton.innerText = "Check";
         qpanel.appendChild(checkButton);
 
-        var nextButton = document.createElement("button");
+        let nextButton = document.createElement("button");
         nextButton.type = "button";
         nextButton.classList.add("btn", "btn-primary");
         nextButton.onclick = nextQuestion;

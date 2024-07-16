@@ -20,21 +20,23 @@ document.addEventListener("DOMContentLoaded", function() {
 function enterQuiz() {
     const quizKey = prompt("Please enter the quiz key:");
     if (quizKey === null || quizKey.trim() === "") {
-        // alert("Quiz key is required.");
+        toastr.warning("Quiz key is required.");
         return;
     }
     
     const validKey = JSON.parse(localStorage.getItem("quiz-keys")); 
     if (quizKey === validKey.js) {
-        localStorage.setItem("quizStarted","true");
+        localStorage.setItem("quizStarted", "true");
         window.location.href = 'questions.html';
     } else {
-        alert("Invalid key. Please try again.");
+        toastr.error("Invalid key. Please try again.");
     }
 }
+
 function userLogout() {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('qstoexecute');
     window.location.href = 'index.html';
-};
+    toastr.info("You have been logged out.");
+}

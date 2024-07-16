@@ -35,26 +35,26 @@ function addQuestion() {
     }
 
     if (!qs || options.some(op => !op)) {
-        alert("Kindly Fill all Fields");
+        toastr.error("Kindly Fill all Fields");
     } else if (!ans) {
-        alert("Kindly Select the correct answer");
+        toastr.error("Kindly Select the correct answer");
     } else {
         const QuizQuestions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
 
         const duplicate = QuizQuestions.find(q => q.question === qs);
 
         if (duplicate) {
-            alert("Question already exists");
+            toastr.error("Question already exists");
         } else {
             const qstoUpload = {
                 id: QuizQuestions.length + 1,
                 question: qs,
-                options: options.map((op, i) => ({ value: op, label: op })),
+                options: options.map((op) => ({ value: op, label: op })),
                 ans: ans
             };
             QuizQuestions.push(qstoUpload);
             localStorage.setItem('Quiz-Questions', JSON.stringify(QuizQuestions));
-            alert("Question added");
+            toastr.success("Question added");
 
             document.querySelector("#qstoadd").value = "";
             for (let i = 1; i <= optionCount; i++) {
@@ -68,7 +68,7 @@ function addQuestion() {
 function showAdd() {
     const addPanel = document.querySelector("#addPanel");
     addPanel.innerHTML = `
-        <h1>Adding Question....</h1>
+        <h1 class='text-primary'>Add Question</h1>
         <label for="qs">Question: </label><br>
         <textarea id="qstoadd" placeholder="Enter Question here..."></textarea><br>
         <br>
@@ -87,6 +87,7 @@ function showAdd() {
         <button type="button" class="btn btn-success" onclick="addQuestion()">Add</button><br>
         <a onclick="showDefault()" class="pe-auto">Go Back</a>
     `;
+    document.querySelector("#head1").classList.add("hideit");
     document.querySelector("#default").classList.add("hideit");
     addPanel.classList.remove("hideit");
 }
@@ -118,7 +119,7 @@ function showDelete() {
     const QuizQuestions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
     const divContent = document.querySelector("#dltPanel");
 
-    divContent.innerHTML = "<h1>Delete Question</h1>";
+    divContent.innerHTML = "<h1 class='text-primary'>Delete Question</h1>";
 
     if (QuizQuestions.length > 0) {
         QuizQuestions.forEach((question, index) => {
@@ -139,12 +140,13 @@ function showDelete() {
     divContent.innerHTML += `<a onclick="showDefault()" class="pe-auto">Go Back</a>`
     document.querySelector("#dltPanel").classList.remove("hideit");
     document.querySelector("#default").classList.add("hideit");
+    document.querySelector("#head1").classList.add("hideit");
 }
 
 function showEdit() {
     let questions = JSON.parse(localStorage.getItem("Quiz-Questions"));
     const editPanel = document.querySelector("#editPanel");
-    editPanel.innerHTML = "<h1>Edit Question</h1>";
+    editPanel.innerHTML = "<h1 class='text-primary'>Edit Question</h1>";
 
     if (questions && questions.length > 0) {
         questions.forEach((question, index) => {
@@ -165,6 +167,7 @@ function showEdit() {
 
     editPanel.innerHTML += `<a onclick="showDefault()" class="pe-auto">Go Back</a>`;
     document.querySelector("#dltPanel").classList.add("hideit");
+    document.querySelector("#head1").classList.add("hideit");
     document.querySelector("#default").classList.add("hideit");
     editPanel.classList.remove("hideit");
 }
@@ -217,15 +220,17 @@ function saveEditedQuestion(index) {
     }
 
     if (!editedQuestion || editedOptions.some(op => !op.label)) {
-        alert("Kindly Fill all Fields");
+        toastr.error("Kindly Fill all Fields");
     } else if (!editedAns) {
-        alert("Kindly Select the correct answer");
+        toastr.error("Kindly Select the correct answer");
     } else {
         questions[index].question = editedQuestion;
         questions[index].options = editedOptions;
         questions[index].ans = editedAns;
 
         localStorage.setItem("Quiz-Questions", JSON.stringify(questions));
+
+        toastr.success("Question edited successfully");
 
         document.querySelector("#editFormPanel").classList.add("hideit");
         showEdit();
@@ -243,6 +248,8 @@ function showDefault() {
     document.querySelector("#addPanel").classList.add("hideit");
     document.querySelector("#editKey").classList.add("hideit");
     document.querySelector("#default").classList.remove("hideit");
+    document.querySelector("#head1").classList.remove("hideit");
+    
 }
 
 function dltqs(num) {
@@ -251,10 +258,10 @@ function dltqs(num) {
     if (num >= 0 && num < QuizQuestions.length) {
         QuizQuestions.splice(num, 1);
         localStorage.setItem('Quiz-Questions', JSON.stringify(QuizQuestions));
-        alert("Question deleted");
+        toastr.info("Question deleted");
         showDelete();
     } else {
-        alert("Invalid question number");
+        toastr.error("Invalid question number");
     }
 }
 
@@ -270,8 +277,8 @@ function showKey() {
     document.querySelector("#default").classList.add("hideit");
     const previouskey = JSON.parse(localStorage.getItem("quiz-keys"));
     let keyPanel = document.querySelector("#editKey");
-    keyPanel.innerHTML = `<h2>Current Key: <span id="JSKey"></span></h2>
-    <input type="text" class="form-control" width="200px" id="newKey">
+    keyPanel.innerHTML = `<h2 class='text-primary'>Current Key: <span id="JSKey"></span></h2>
+    <input type="text" class="form-control" width="200px" id="newKey"><br>  
     <button type="button" class="btn btn-primary" onclick="changeKey()">Change Key</button>
     <button type="button" class="btn btn-danger" onclick="showDefault()">Go Back</button>
     `
@@ -282,10 +289,10 @@ function changeKey() {
     const newKey = document.querySelector("#newKey");
     const previouskey = JSON.parse(localStorage.getItem("quiz-keys"));
     if (newKey.value === "") {
-        alert("Kindly Enter Value");
+        toastr.warning("Kindly Enter Value");
     }
     else if (newKey.value == previouskey.js) {
-        alert("Enter a New key to Update");
+        toastr.warning("Enter a New key to Update");
     } else {
         previouskey.js = newKey.value;
         localStorage.setItem("quiz-keys", JSON.stringify(previouskey));

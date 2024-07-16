@@ -1,15 +1,39 @@
-.hideit {
-  display: none;
+@font-face {
+  font-family: roboto;
+  src: url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+  font-weight: bold;
 }
+
+* {
+  font-family: roboto;
+}
+
+body{
+  transition: 2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  /* background-color: cornflowerblue; */
+}
+
+.hideit {
+  display: none !important;
+}
+
 .option-container {
   margin-bottom: 5px;
 }
+
 .pe-auto {
   cursor: pointer;
 }
+
 .cursorclass {
   cursor: pointer;
 }
+
 .cursorclass:hover {
   background-color: lightgrey;
 }
@@ -17,15 +41,19 @@
 label {
   cursor: pointer;
 }
+
 .bggreen {
   background-color: lightgreen;
 }
+
 .bgred {
   background-color: red;
 }
-#qstoadd{
+
+#qstoadd {
   width: 300px;
 }
+
 .btn-option {
   border: 2px solid black;
   transition: border-color 0.3s ease;
@@ -35,7 +63,107 @@ label {
   border-color: blue;
 }
 
-.form-control{
+.form-control {
   width: 200px;
-  border: .5px solid rgba(0, 0, 0, 0.547);
+  border: .5px solid rgba(0, 0, 0, 0.5);
+}
+
+.centerall {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.648);
+  height: max-content;
+  width: max-content;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.innerform {
+  padding: 60px;
+  margin-bottom: -35px;
+  margin-top: -25px;
+  margin-left: -20px;
+}
+
+.innerform input {
+  width: 110%;
+}
+
+#header{
+  position: absolute !important;
+  top: 10 !important;
+  left: 10 !important;
+  margin-top: -600px;
+  color: white;
+}
+.text-primary{
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+#default{
+  display: flex;
+  flex-wrap: wrap;
+  width: 70vw;
+  justify-content: space-around;
+  /* background-color: ; */
+}
+#addPanel{
+  margin: 0 auto;
+}
+
+#adminfile>div{
+  padding: 60px;
+  padding-bottom: 50px;
+  box-shadow: 0px 5px 8px 0px #000000a5;
+  height: max-content;
+  /* width: max-content; */
+  border-radius: 20px;
+  background-color: white;
+}
+#default>button{
+  margin-bottom: 10px;
+  padding: 10px;
+}
+#head1{
+  position: absolute !important;
+  top: 40px;
+  color: white;
+  /* align-self: center; */
+}
+
+#qpanel{
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 5px 8px 0px #000000a5;
+
+}
+
+#marks{
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+#question , #qnum{
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -5;
+}
+
+@media screen and (max-width: 430px){
+  #addPanel, #dltPanel, #editPanel{
+    padding: 10px !important;
+    width: 300px;
+  }
 }
