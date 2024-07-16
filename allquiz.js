@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    // Display the user's score
+    document.querySelector("#username").innerHTML+= toTitleCase(currentUser.name);
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const currentUserData = users.find(user => user.name === currentUser.name);
 
@@ -39,4 +39,10 @@ function userLogout() {
     localStorage.removeItem('qstoexecute');
     window.location.href = 'index.html';
     toastr.info("You have been logged out.");
+}
+
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }
