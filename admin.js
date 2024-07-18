@@ -75,14 +75,14 @@ function showAdd() {
     addPanel.innerHTML = `
         <h1 class='text-primary'>Add Question</h1>
         <label for="qs">Question: </label><br>
-        <textarea id="qstoadd" placeholder="Enter Question here..."></textarea><br>
+        <textarea id="qstoadd" placeholder="Enter Question here..." cols:"50"></textarea><br>
         <br>
         <div id="optionsContainer">
             ${[1, 2].map(i => `
                 <div id="option${i}">
                     <label for="op${i}">Option ${i}: </label>&nbsp;
                     <input type="text" id="op${i}">&nbsp;
-                    <input type="radio" name="ans" id="ans${i}"><br>
+                    <input type="radio" name="ans" id="ans${i}"><br><br>
                 </div>
             `).join('')}
         </div>
@@ -111,7 +111,7 @@ function addOption() {
         <div id="option${optionCount}">
             <label for="op${optionCount}">Option ${optionCount}: </label>&nbsp;
             <input type="text" id="op${optionCount}">&nbsp;
-            <input type="radio" name="ans" id="ans${optionCount}"><br>
+            <input type="radio" name="ans" id="ans${optionCount}"><br><br>
         </div>
     `;
         optionsContainer.innerHTML += newOption;

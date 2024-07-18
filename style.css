@@ -118,6 +118,11 @@ label {
 #addPanel {
   margin: 0 auto;
 }
+#adminfile >.toast{
+  background-color: none !important;
+  box-shadow: none !important;
+  padding: 0px;
+}
 
 #adminfile > div {
   padding: 60px;
@@ -128,6 +133,10 @@ label {
   border-radius: 20px;
   background-color: white;
 }
+
+
+
+
 #default > button {
   margin-bottom: 10px;
   padding: 10px;
@@ -167,6 +176,12 @@ label {
   min-height: 100%;
   z-index: -5;
   right: 10;
+}
+
+textarea{
+  resize: both !important;
+  /* min-width: 250px;
+  min-height: 100px; */
 }
 
 @media screen and (max-width: 430px) {
