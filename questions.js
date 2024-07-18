@@ -30,8 +30,8 @@ function shuffle(array) {
 var questions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
 
 if (questions.length === 0) {
-    alert("Ask admin to add questions");
-    userGoBack();
+    toastr.warning("Ask admin to add questions");
+    window.location.href = 'allquiz.html';
 } else {
     if (!localStorage.getItem('shuffledQuestions')) {
         var shuffledQuestions = shuffle([...questions]);
@@ -148,7 +148,7 @@ if (questions.length === 0) {
                 document.querySelector("#nextbtn").classList.remove("hideit");
             }
         } else {
-            alert("Please select an answer.");
+            toastr.warning("Please select an answer.");
         }
 
         var allButtons = document.querySelectorAll(".btn-option");

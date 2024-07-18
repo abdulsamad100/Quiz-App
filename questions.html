@@ -13,20 +13,18 @@
         function initializeQuiz() {
             const quizStatus = JSON.parse(localStorage.getItem('quizStarted'));
             if (!quizStatus) {
-                alert("Kindly Try Again");
-                // localStorage.removeItem('isLoggedIn');
+                toastr.error("Kindly Try Again");
                 window.location.href = "allquiz.html";
                 return;
             }
             if (!localStorage.getItem("isLoggedIn")) {
-                alert("Kindly Login to see questions");
+                toastr.error("Kindly Login to see questions");
                 window.location.href = "index.html";
                 return;
             }
             var questions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
             if (questions.length === 0) {
-                alert("Ask admin to add questions");
-                // localStorage.removeItem('isLoggedIn');
+                toastr.error("Ask admin to add questions");
                 window.location.href = "allquiz.html";
                 return;
             }
