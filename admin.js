@@ -95,6 +95,12 @@ function showAdd() {
 function addOption() {
     if (optionCount < 4) {
         optionCount++;
+
+        const optionsValues = [];
+        for (let i = 1; i < optionCount; i++) {
+            optionsValues.push(document.querySelector(`#op${i}`).value);
+        }
+
         const optionsContainer = document.querySelector("#optionsContainer");
         const newOption = `
         <div id="option${optionCount}">
@@ -104,6 +110,11 @@ function addOption() {
         </div>
     `;
         optionsContainer.innerHTML += newOption;
+
+        // Restore the previous values
+        for (let i = 1; i < optionCount; i++) {
+            document.querySelector(`#op${i}`).value = optionsValues[i - 1];
+        }
     }
 }
 
