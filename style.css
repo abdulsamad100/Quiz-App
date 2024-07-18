@@ -19,6 +19,10 @@ body {
   /* background-color: cornflowerblue; */
 }
 
+.whitecolor{
+  color: white;
+}
+
 .hideit {
   display: none !important;
 }
