@@ -36,9 +36,14 @@ function addQuestion() {
 
     if (!qs || options.some(op => !op)) {
         toastr.error("Kindly Fill all Fields");
-    } else if (!ans) {
+    }
+    else if (!ans) {
         toastr.error("Kindly Select the correct answer");
-    } else {
+    } 
+    else if (new Set(options).size !== options.length) {
+        toastr.error("Options should be unique");
+    } 
+    else {
         const QuizQuestions = JSON.parse(localStorage.getItem('Quiz-Questions')) || [];
 
         const duplicate = QuizQuestions.find(q => q.question === qs);
@@ -111,7 +116,6 @@ function addOption() {
     `;
         optionsContainer.innerHTML += newOption;
 
-        // Restore the previous values
         for (let i = 1; i < optionCount; i++) {
             document.querySelector(`#op${i}`).value = optionsValues[i - 1];
         }

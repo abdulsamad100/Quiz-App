@@ -2,21 +2,18 @@ window.onbeforeunload = function (event) {
     var confirmationMessage = 'Are you sure you want to leave this page?';
     event.returnValue = confirmationMessage;
     localStorage.removeItem("quizStarted");
-    // localStorage.removeItem('isLoggedIn');
-    // Commented out the line below to avoid an unnecessary redirection
-    // window.location.href = 'allquiz.html';
     return confirmationMessage;
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    // if (!localStorage.getItem('isLoggedIn')) {
-    //     window.location.href = 'index.html';
-    //     return;
-    // }
-    // if (!localStorage.getItem('quizStarted')) {
-    //     window.location.href = 'allquiz.html';
-    //     return;
-    // }
+    if (!localStorage.getItem('isLoggedIn')) {
+        window.location.href = 'index.html';
+        return;
+    }
+    if (!localStorage.getItem('quizStarted')) {
+        window.location.href = 'allquiz.html';
+        return;
+    }
 });
 
 var correctans = 0;
@@ -181,7 +178,6 @@ if (questions.length === 0) {
 
             localStorage.removeItem('shuffledQuestions');
 
-            // Update the user's score in localStorage
             let users = JSON.parse(localStorage.getItem('users')) || [];
             let updatedUsers = users.map(u => {
                 if (u.name === user.name) {
@@ -190,11 +186,7 @@ if (questions.length === 0) {
                 return u;
             });
             localStorage.setItem('users', JSON.stringify(updatedUsers));
-            // Optionally, you might want to update the currentUser as well
             localStorage.setItem('currentUser', JSON.stringify({ ...user, jscore: percentage.toFixed(2) }));
-
-            // localStorage.removeItem('isLoggedIn');
-            // localStorage.removeItem('currentUser');
         }
     }
 
@@ -216,8 +208,6 @@ if (questions.length === 0) {
 };
 
 function userGoback() {
-    // localStorage.removeItem('isLoggedIn');
-    // localStorage.removeItem('currentUser');
     localStorage.removeItem('quizStarted');
     localStorage.removeItem('qstoexecute');
     window.location.href = 'allquiz.html';
