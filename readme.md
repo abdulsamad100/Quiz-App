@@ -4,8 +4,6 @@ A Quiz Application built with HTML, CSS, and JavaScript, featuring user and admi
 
 **Login/Sigup Page**
 ![Quiz App Screenshot](screenshot2.png)
-**All Quiz Page**
-![Quiz App Screenshot](screenshot.png)
 **Admin Page**
 ![Quiz App Screenshot](screenshot3.png)
 **Quiz Page**
