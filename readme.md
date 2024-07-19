@@ -3,6 +3,9 @@
 A Quiz Application built with HTML, CSS, and JavaScript, featuring user and admin functionalities, dynamic question handling, and localStorage integration for question management.
 
 ![Quiz App Screenshot](screenshot.png)
+![Quiz App Screenshot](screenshot2.png)
+![Quiz App Screenshot](screenshot3.png)
+![Quiz App Screenshot](screenshot4.png)
 
 ## Features
 
