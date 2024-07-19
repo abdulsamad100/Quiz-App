@@ -2,13 +2,13 @@
 
 A Quiz Application built with HTML, CSS, and JavaScript, featuring user and admin functionalities, dynamic question handling, and localStorage integration for question management.
 
-Login/Sigup Page
+**Login/Sigup Page**
 ![Quiz App Screenshot](screenshot2.png)
-All Quiz Page
+**All Quiz Page**
 ![Quiz App Screenshot](screenshot.png)
-Admin Page
+**Admin Page**
 ![Quiz App Screenshot](screenshot3.png)
-Quiz Page
+**Quiz Page**
 ![Quiz App Screenshot](screenshot4.png)
 
 ## Features
