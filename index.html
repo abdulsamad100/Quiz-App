@@ -22,9 +22,11 @@
 </head>
 
 <body>
-    <video autoplay muted loop id="myVideo">
+    <!-- <video autoplay muted loop id="myVideo">
         <source src="Blue gradient motion graphic background 7000559 Stock Video at Vecteezy.mp4" type="video/mp4">
-    </video>
+    </video> -->
+    <img src="background.jpeg" alt="" id="myVideo">
+
     <div id="signup" class="centerall">
         <form class="innerform" onsubmit="signup(event)">
             <h1 class="text-primary">Signup</h1>
@@ -49,7 +51,7 @@
             <label for="ulpass">Password: </label><input class="form-control" type="password" id="ulpass"
                 required="required"><br>
             <button type="submit" class="btn btn-primary">Login</button><br><br>
-            New User Signup
+            New User? 
             <a onclick="showSignup()" class="pe-auto">Signup</a><br><br>
             <a onclick="showAdmin()" class="pe-auto">Admin Login</a><br><br>
         </form>
@@ -62,7 +64,7 @@
                 required="required"><br>
             <label for="alpass">Password: </label><input class="form-control" type="password" id="alpass"><br>
             <button type="submit" class="btn btn-primary">Login</button><br><br>
-            Not an Admin Use? the Below options <br>
+            Not an Admin? Use the Below options <br>
             <a onclick="showSignup()" class="pe-auto">Signup</a>&nbsp;&nbsp;&nbsp;
             <a onclick="showLogin()" class="pe-auto">Login</a><br><br>
         </form>

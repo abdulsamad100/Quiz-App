@@ -16,11 +16,42 @@ body {
   height: 100vh;
   margin: 0;
   cursor: url("mouse.png"), default;
+  animation: fadeIn 2s;
   /* background-color: cornflowerblue; */
 }
 
-.whitecolor{
-  color: white;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+
+.whitecolor {
+  color: black;
 }
 
 .hideit {
@@ -29,6 +60,7 @@ body {
 
 .option-container {
   margin-bottom: 5px;
+  animation: slideIn 1s ease-out;
 }
 
 .pe-auto {
@@ -37,6 +69,7 @@ body {
 
 .cursorclass {
   cursor: pointer;
+  /* animation: bounce 2s infinite; */
 }
 
 .cursorclass:hover {
@@ -82,6 +115,7 @@ label {
   width: max-content;
   border-radius: 20px;
   background-color: white;
+  animation: slideIn 1s ease-out;
 }
 
 .innerform {
@@ -102,9 +136,11 @@ label {
   margin-top: -600px;
   color: white;
 }
+
 .text-primary {
   font-weight: 600;
   font-size: 2rem;
+  animation: fadeIn 2s;
 }
 
 #default {
@@ -115,10 +151,12 @@ label {
   justify-content: space-around;
   /* background-color: ; */
 }
+
 #addPanel {
   margin: 0 auto;
 }
-#adminfile >.toast{
+
+#adminfile > .toast {
   background-color: none !important;
   box-shadow: none !important;
   padding: 0px;
@@ -134,13 +172,12 @@ label {
   background-color: white;
 }
 
-
-
-
 #default > button {
   margin-bottom: 10px;
   padding: 10px;
+  animation: slideIn 1s ease-out;
 }
+
 #head1 {
   position: absolute !important;
   top: 40px;
@@ -153,12 +190,14 @@ label {
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0px 5px 8px 0px #000000a5;
+  animation: fadeIn 2s;
 }
 
 #marks {
   background-color: white;
   padding: 20px;
   border-radius: 20px;
+  animation: fadeIn 2s;
 }
 
 #question,
@@ -177,12 +216,12 @@ label {
   z-index: -5;
   right: 10;
   -webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
+  /* -moz-filter: blur(5px);
     -o-filter: blur(5px);
-    -ms-filter: blur(5px);
+    -ms-filter: blur(5px); */
 }
 
-textarea{
+textarea {
   resize: both !important;
   /* min-width: 250px;
   min-height: 100px; */
